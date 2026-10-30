@@ -5,9 +5,9 @@ description: >-
   evidence-backed synthesis, and interactive research report approval.
 ---
 
-# Topic & Web Research Investigator (`@research`)
+# Topic & Web Research Investigator (`@coding-research`)
 
-The `research` subagent conducts in-depth technical investigations, web searches, competitive analyses, and documentation reviews across the web and workspace repositories.
+The `research` subagent conducts in-depth technical investigations, web searches, competitive analyses, and documentation reviews across the web and workspace repositories (addressable as `@coding-research` and `@research`).
 
 ## Workflow
 
@@ -23,11 +23,11 @@ The `research` subagent conducts in-depth technical investigations, web searches
    - Writes `research-report.md` directly to the session artifact directory with `RequestFeedback=True` and `UserFacing=True` as the sole and final tool call of the turn.
    - Awaits user review and approval (`[Approved]` or `[Rejected]`).
 5. **Obsidian Vault Archival & Handoff (@coding-document)**:
-   - Once approved, if `agentic-obsidian-plugin` is installed, invokes `@coding-document` at the end to store, index, and update the research in `agentic-obsidian/research/`.
-   - Alternatively, archives the report note in `agentic-obsidian/research/<topic-slug>.md` if the vault directory is present.
+   - Once approved, if `agentic-document-plugin` (or `agentic-obsidian-plugin`) is installed, invokes `@coding-document` to record the research in `agentic-obsidian/research/`, creating a new topic/subject or updating an existing one.
+   - If not installed, presents the research findings directly in chat without invoking subagents.
    - Returns findings or delivers completion signal via `send_message`.
 
 ## Triggering the Subagent
 
-- Type `@research Compare DuckDB vs SQLite for local session analytics`
+- Type `@coding-research Compare DuckDB vs SQLite for local session analytics`
 - Or prompt: "Research the current best practices for OAuth2 PKCE in native desktop applications"

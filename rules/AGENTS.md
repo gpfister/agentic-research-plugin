@@ -27,4 +27,5 @@ This rule set applies whenever the `agentic-research-plugin` is active in an Ant
 ---
 
 ## 4. Documentation Archival with @coding-document
-- When `agentic-obsidian-plugin` is active, `@coding-research` / `@research` must invoke `@coding-document` at the end to store and update research briefs, trade-off matrices, and citations in `agentic-obsidian/research/`.
+- When `agentic-document-plugin` (or `agentic-obsidian-plugin`) is active, `@coding-research` must invoke `@coding-document` at the end to record the research in `agentic-obsidian/research/`, creating a new topic/subject or updating an existing one.
+- If `agentic-document-plugin` (or `agentic-obsidian-plugin`) is not installed, output the findings directly to the user in chat without invoking subagents.

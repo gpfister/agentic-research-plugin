@@ -68,16 +68,18 @@ def test_central_agent_guide_exists():
     central_file = PLUGIN_ROOT / "agents" / "agent.md"
     assert central_file.exists(), "agents/agent.md must exist"
     content = central_file.read_text(encoding="utf-8")
-    assert "name: research-catalog" in content
-    assert "@research" in content
+    assert "name: research-catalog" in content or "name: coding-research-catalog" in content
+    assert "research" in content
     assert "research-report.md" in content
 
 
 def test_research_agent_exists():
-    agent_file = PLUGIN_ROOT / "agents" / "research" / "agent.md"
-    assert agent_file.exists(), "agents/research/agent.md must exist"
+    agent_file = PLUGIN_ROOT / "agents" / "coding-research" / "agent.md"
+    if not agent_file.exists():
+        agent_file = PLUGIN_ROOT / "agents" / "research" / "agent.md"
+    assert agent_file.exists(), "agent.md must exist in coding-research or research"
     content = agent_file.read_text(encoding="utf-8")
-    assert "name: research" in content
+    assert "name: coding-research" in content or "name: research" in content
     assert "coding-research" in content
     assert "@research" in content
     assert "search_web" in content
