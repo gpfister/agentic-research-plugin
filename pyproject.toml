@@ -1,0 +1,18 @@
+[project]
+name = "agentic-research-plugin"
+version = "0.1.0"
+description = "Autonomous web and topic research plugin conducting literature reviews, competitive analyses, and evidence synthesis."
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Greg PFISTER", email = "gregory.pfister@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.10.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]

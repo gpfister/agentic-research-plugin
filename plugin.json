@@ -1,0 +1,6 @@
+{
+  "name": "agentic-research-plugin",
+  "description": "Autonomous web and topic research plugin conducting literature reviews, competitive analyses, and evidence synthesis.",
+  "version": "0.1.0",
+  "license": "MIT"
+}
