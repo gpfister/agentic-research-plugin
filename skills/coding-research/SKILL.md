@@ -1,5 +1,5 @@
 ---
-name: research
+name: coding-research
 description: >-
   Autonomous worker subagent for web search, technical literature reviews, technology comparisons,
   evidence-backed synthesis, and interactive research report approval.
@@ -7,7 +7,7 @@ description: >-
 
 # Topic & Web Research Investigator (`@coding-research`)
 
-The `research` subagent conducts in-depth technical investigations, web searches, competitive analyses, and documentation reviews across the web and workspace repositories (addressable as `@coding-research` and `@research`).
+The `coding-research` subagent conducts in-depth technical investigations, web searches, competitive analyses, and documentation reviews across the web and workspace repositories (addressable as `@coding-research`).
 
 ## Workflow
 

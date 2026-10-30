@@ -2,8 +2,20 @@
 
 import json
 from pathlib import Path
+import re
 
 PLUGIN_ROOT = Path(__file__).resolve().parent.parent
+
+
+def extract_frontmatter_aliases(content: str) -> list[str]:
+    match = re.search(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
+    if not match:
+        return []
+    fm = match.group(1)
+    alias_match = re.search(r"aliases:\s*\n((?:\s*-\s+[^\n]+\n)+)", fm)
+    if not alias_match:
+        return []
+    return [line.strip().lstrip("-").strip() for line in alias_match.group(1).strip().splitlines()]
 
 
 def test_plugin_manifest_valid():
@@ -48,7 +60,7 @@ def test_readme_exists():
     assert readme_file.exists(), "README.md must exist"
     content = readme_file.read_text(encoding="utf-8")
     assert "agentic-research-plugin" in content
-    assert "@research" in content
+    assert "@coding-research" in content
     assert "research-report.md" in content
     assert "agentic-obsidian/research/" in content
 
@@ -75,13 +87,14 @@ def test_central_agent_guide_exists():
 
 def test_research_agent_exists():
     agent_file = PLUGIN_ROOT / "agents" / "coding-research" / "agent.md"
-    if not agent_file.exists():
-        agent_file = PLUGIN_ROOT / "agents" / "research" / "agent.md"
-    assert agent_file.exists(), "agent.md must exist in coding-research or research"
+    assert agent_file.exists(), "agents/coding-research/agent.md must exist"
+
+    legacy_agent_dir = PLUGIN_ROOT / "agents" / "research"
+    assert not legacy_agent_dir.exists(), "agents/research must NOT exist"
+
     content = agent_file.read_text(encoding="utf-8")
-    assert "name: coding-research" in content or "name: research" in content
-    assert "coding-research" in content
-    assert "@research" in content
+    assert "name: coding-research" in content
+    assert "@coding-research" in content
     assert "search_web" in content
     assert "read_file" in content
     assert "write_file" in content
@@ -92,12 +105,23 @@ def test_research_agent_exists():
     assert "RequestFeedback" in content
     assert "agentic-obsidian/research/" in content
 
+    aliases = extract_frontmatter_aliases(content)
+    assert aliases, "aliases must be defined in frontmatter"
+    assert "research" not in aliases, "'research' alias must be excluded"
+    alias_pattern = re.compile(r"^coding(-.*)?$")
+    for alias in aliases:
+        assert alias_pattern.match(alias), f"Alias '{alias}' does not match pattern '^coding(-.*)?$'"
+
 
 def test_research_skill_exists():
-    skill_file = PLUGIN_ROOT / "skills" / "research" / "SKILL.md"
-    assert skill_file.exists(), "skills/research/SKILL.md must exist"
+    skill_file = PLUGIN_ROOT / "skills" / "coding-research" / "SKILL.md"
+    assert skill_file.exists(), "skills/coding-research/SKILL.md must exist"
+
+    legacy_skill_dir = PLUGIN_ROOT / "skills" / "research"
+    assert not legacy_skill_dir.exists(), "skills/research must NOT exist"
+
     content = skill_file.read_text(encoding="utf-8")
-    assert "name: research" in content
+    assert "name: coding-research" in content
     assert "Topic & Web Research Investigator" in content
     assert "research-report.md" in content
     assert "agentic-obsidian/research/" in content

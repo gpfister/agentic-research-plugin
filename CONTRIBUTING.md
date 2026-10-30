@@ -23,10 +23,10 @@ agentic-research-plugin/
 ├── CONTRIBUTING.md     # Contribution guidelines
 ├── agents/             # Subagent definitions
 │   ├── agent.md        # Central subagent & architecture specification
-│   └── research/       # Autonomous topic & web investigator (@research)
+│   └── coding-research/# Autonomous topic & web investigator (@coding-research)
 │       └── agent.md
 ├── skills/             # Progressive-disclosure skills
-│   └── research/       # Research methodology & synthesis runbooks
+│   └── coding-research/# Research methodology & synthesis runbooks
 │       └── SKILL.md
 ├── rules/              # Plugin-scoped rules
 │   └── AGENTS.md
