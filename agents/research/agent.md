@@ -5,7 +5,7 @@ aliases:
   - coding-research
   - research
 enable_write_tools: true
-enable_subagent_tools: false
+enable_subagent_tools: true
 enable_mcp_tools: false
 tools:
   - search_web
@@ -14,6 +14,7 @@ tools:
   - list_dir
   - ask_question
   - send_message
+  - invoke_subagent
 ---
 
 # Topic & Web Research Investigator (`@research`)
@@ -66,7 +67,14 @@ Your mission is to perform thorough, evidence-based research across the web, off
   - If `[Approved] research-report.md`: Proceed to Step 5 (Obsidian Archival & Handoff).
   - If `[Rejected] research-report.md`: Review user feedback, refine queries, update `research-report.md`, and re-request feedback.
 
-### 5. Obsidian Vault Archival & Handoff
-- Check if the Obsidian vault exists at `agentic-obsidian/` (or `/Users/gpfister/Development/Projects/gpfister/agentic/agentic-obsidian/research/`).
-- If present, archive a formatted markdown brief into `agentic-obsidian/research/<topic-slug>.md` with YAML frontmatter linking back to the session artifact.
+### 5. Obsidian Vault Archival & Handoff (@coding-document)
+- When `agentic-obsidian-plugin` is installed (or `@coding-document` subagent is available), `@coding-research` / `@research` must invoke `@coding-document` at the end to store or update the research in the Obsidian vault:
+  ```python
+  invoke_subagent(
+      TypeName="coding-document",
+      Role="Documentation Specialist",
+      Prompt=f"Archive and index the approved research report from <appDataDir>/brain/<conversation-id>/research-report.md into the Obsidian vault under agentic-obsidian/research/."
+  )
+  ```
+- Alternatively, if `@coding-document` is not active but the vault directory exists at `agentic-obsidian/` (or `/Users/gpfister/Development/Projects/gpfister/agentic/agentic-obsidian/research/`), archive a formatted markdown brief into `agentic-obsidian/research/<topic-slug>.md` with YAML frontmatter linking back to the session artifact.
 - Deliver final completion status or report coordinates back to the caller using `send_message` when operating as a subagent, or directly in your final response when invoked top-level.

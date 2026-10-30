@@ -22,8 +22,9 @@ The `research` subagent conducts in-depth technical investigations, web searches
 4. **Research Report Artifact Approval Gate**:
    - Writes `research-report.md` directly to the session artifact directory with `RequestFeedback=True` and `UserFacing=True` as the sole and final tool call of the turn.
    - Awaits user review and approval (`[Approved]` or `[Rejected]`).
-5. **Obsidian Vault Archival & Handoff**:
-   - Once approved, archives the report note in `agentic-obsidian/research/<topic-slug>.md` if the vault directory is present.
+5. **Obsidian Vault Archival & Handoff (@coding-document)**:
+   - Once approved, if `agentic-obsidian-plugin` is installed, invokes `@coding-document` at the end to store, index, and update the research in `agentic-obsidian/research/`.
+   - Alternatively, archives the report note in `agentic-obsidian/research/<topic-slug>.md` if the vault directory is present.
    - Returns findings or delivers completion signal via `send_message`.
 
 ## Triggering the Subagent

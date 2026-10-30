@@ -23,3 +23,8 @@ This rule set applies whenever the `agentic-research-plugin` is active in an Ant
 - Keep research briefs structured, concise, and focused on high-signal findings.
 - Always generate clickable markdown links using the `file://` scheme when referencing workspace files, local documentation, or Obsidian vault notes.
 - Use GitHub Flavored Markdown alerts (`> [!NOTE]`, `> [!IMPORTANT]`, `> [!TIP]`, `> [!WARNING]`) appropriately to emphasize key takeaways without nesting.
+
+---
+
+## 4. Documentation Archival with @coding-document
+- When `agentic-obsidian-plugin` is active, `@coding-research` / `@research` must invoke `@coding-document` at the end to store and update research briefs, trade-off matrices, and citations in `agentic-obsidian/research/`.

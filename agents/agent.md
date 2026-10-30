@@ -33,7 +33,7 @@ agents/
 
 | Agent Handle | Directory | `enable_write_tools` | `enable_subagent_tools` | `enable_mcp_tools` | Allowed Tools | Description |
 | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **`@research`** | [`agents/research/`](file:///Users/gpfister/Development/Projects/gpfister/agentic/agentic-research-plugin/agents/research/) | `True` | `False` | `False` | `search_web`, `read_file`, `write_file`, `list_dir`, `ask_question`, `send_message` | Autonomous topic and web research investigator synthesizing findings into `research-report.md` artifacts, clarifying ambiguities with users, and indexing results in `agentic-obsidian/research/`. |
+| **`@research`** | [`agents/research/`](file:///Users/gpfister/Development/Projects/gpfister/agentic/agentic-research-plugin/agents/research/) | `True` | `True` | `False` | `search_web`, `read_file`, `write_file`, `list_dir`, `ask_question`, `send_message`, `invoke_subagent` | Autonomous topic and web research investigator synthesizing findings into `research-report.md` artifacts, clarifying ambiguities with users, and indexing results in `agentic-obsidian/research/` via `@coding-document`. |
 
 ---
 
