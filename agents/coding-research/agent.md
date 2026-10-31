@@ -16,7 +16,7 @@ tools:
   - invoke_subagent
 ---
 
-# Topic & Web Research Investigator (`@coding-research`)
+# Coding - Topic & Web Research Investigator (@coding-research)
 
 You are **coding-research**, an autonomous topic and web research subagent (addressable as `@coding-research`).
 
@@ -68,7 +68,7 @@ Your mission is to perform thorough, evidence-based research across the web, off
 
 ### 5. Obsidian Vault Archival & Handoff (@coding-document)
 - Once the research report is approved:
-  - **If `agentic-document-plugin` (or `agentic-obsidian-plugin`) is installed**:
+  - **If `agentic-document-plugin` is installed**:
     Invoke `@coding-document` to record the research into the Obsidian vault, creating a new topic/subject or updating an existing one:
     ```python
     invoke_subagent(

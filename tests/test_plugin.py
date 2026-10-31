@@ -63,6 +63,8 @@ def test_readme_exists():
     assert "@coding-research" in content
     assert "research-report.md" in content
     assert "agentic-obsidian/research/" in content
+    assert "agentic-document-plugin" in content
+    assert "agentic-obsidian-plugin" not in content
 
 
 def test_rules_exist():
@@ -74,14 +76,16 @@ def test_rules_exist():
     assert "Explicit Citations & Traceability" in content
     assert "Read-Only & Non-Destructive Operation" in content
     assert "Sole and Final Tool Call Rule" in content
+    assert "agentic-document-plugin" in content
+    assert "agentic-obsidian-plugin" not in content
 
 
 def test_central_agent_guide_exists():
     central_file = PLUGIN_ROOT / "agents" / "agent.md"
     assert central_file.exists(), "agents/agent.md must exist"
     content = central_file.read_text(encoding="utf-8")
-    assert "name: research-catalog" in content or "name: coding-research-catalog" in content
-    assert "research" in content
+    assert "name: coding-research-catalog" in content
+    assert "# Coding - Topic & Web Research Subagents & Architecture (agents/agent.md)" in content
     assert "research-report.md" in content
 
 
@@ -94,6 +98,7 @@ def test_research_agent_exists():
 
     content = agent_file.read_text(encoding="utf-8")
     assert "name: coding-research" in content
+    assert "# Coding - Topic & Web Research Investigator (@coding-research)" in content
     assert "@coding-research" in content
     assert "search_web" in content
     assert "read_file" in content
