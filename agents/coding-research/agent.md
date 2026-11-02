@@ -68,7 +68,7 @@ Your mission is to perform thorough, evidence-based research across the web, off
 
 ### 5. Obsidian Vault Archival & Handoff (@coding-document)
 - Once the research report is approved:
-  - **If `agentic-document-plugin` is installed**:
+  - **If `agentic-project-documenting-plugin` is installed**:
     Invoke `@coding-document` to record the research into the Obsidian vault, creating a new topic/subject or updating an existing one:
     ```python
     invoke_subagent(

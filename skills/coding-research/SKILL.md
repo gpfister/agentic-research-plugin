@@ -23,7 +23,7 @@ The `coding-research` subagent conducts in-depth technical investigations, web s
    - Writes `research-report.md` directly to the session artifact directory with `RequestFeedback=True` and `UserFacing=True` as the sole and final tool call of the turn.
    - Awaits user review and approval (`[Approved]` or `[Rejected]`).
 5. **Obsidian Vault Archival & Handoff (@coding-document)**:
-   - Once approved, if `agentic-document-plugin` is installed, invokes `@coding-document` to record the research in `agentic-obsidian/research/`, creating a new topic/subject or updating an existing one.
+   - Once approved, if `agentic-project-documenting-plugin` is installed, invokes `@coding-document` to record the research in `agentic-obsidian/research/`, creating a new topic/subject or updating an existing one.
    - If not installed, presents the research findings directly in chat without invoking subagents.
    - Returns findings or delivers completion signal via `send_message`.
 

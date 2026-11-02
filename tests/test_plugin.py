@@ -63,7 +63,8 @@ def test_readme_exists():
     assert "@coding-research" in content
     assert "research-report.md" in content
     assert "agentic-obsidian/research/" in content
-    assert "agentic-document-plugin" in content
+    assert "agentic-project-documenting-plugin" in content
+    assert "agentic-document-plugin" not in content
     assert "agentic-obsidian-plugin" not in content
 
 
@@ -76,7 +77,8 @@ def test_rules_exist():
     assert "Explicit Citations & Traceability" in content
     assert "Read-Only & Non-Destructive Operation" in content
     assert "Sole and Final Tool Call Rule" in content
-    assert "agentic-document-plugin" in content
+    assert "agentic-project-documenting-plugin" in content
+    assert "agentic-document-plugin" not in content
     assert "agentic-obsidian-plugin" not in content
 
 

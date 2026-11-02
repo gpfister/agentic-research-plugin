@@ -48,7 +48,7 @@ Clarify Ambiguity ──> Query Web & Docs ──> Cross-Validate Evidence ─�
                                                              │
                                                       [Approved by User]
                                                              ▼
-                                                agentic-document-plugin installed?
+                                           agentic-project-documenting-plugin installed?
                                                        │                    │
                                                      (Yes)                 (No)
                                                        ▼                    ▼
@@ -61,4 +61,4 @@ Clarify Ambiguity ──> Query Web & Docs ──> Cross-Validate Evidence ─�
 - **Location**: `<appDataDir>/brain/<conversation-id>/research-report.md`
 - **Metadata**: `ArtifactMetadata={"RequestFeedback": True, "UserFacing": True, "Summary": "..."}`
 - **Sole & Final Tool Call Rule**: `write_file` must be the sole and final tool call of that turn to trigger the interactive Approve / Reject buttons in Antigravity.
-- **Obsidian Vault Integration**: When `agentic-document-plugin` is installed, invokes `@coding-document` to create a new topic or update an existing one in `agentic-obsidian/research/`.
+- **Obsidian Vault Integration**: When `agentic-project-documenting-plugin` is installed, invokes `@coding-document` to create a new topic or update an existing one in `agentic-obsidian/research/`.
