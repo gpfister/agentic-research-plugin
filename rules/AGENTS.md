@@ -1,6 +1,6 @@
-# Topic & Web Research Standards — agentic-research-plugin
+# Topic & Web Research Standards — agentic-topic-researching-plugin
 
-This rule set applies whenever the `agentic-research-plugin` is active in an Antigravity session.
+This rule set applies whenever the `agentic-topic-researching-plugin` is active in an Antigravity session.
 
 ---
 

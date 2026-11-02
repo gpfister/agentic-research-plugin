@@ -1,6 +1,6 @@
 ---
 name: coding-research-catalog
-description: Architecture overview and catalog for the agentic-research-plugin subagents.
+description: Architecture overview and catalog for the agentic-topic-researching-plugin subagents.
 enable_write_tools: false
 enable_subagent_tools: false
 enable_mcp_tools: false
@@ -11,13 +11,13 @@ tools:
 
 # Coding - Topic & Web Research Subagents & Architecture (agents/agent.md)
 
-This document defines the subagent architecture and catalog for the **`agentic-research-plugin`**.
+This document defines the subagent architecture and catalog for the **`agentic-topic-researching-plugin`**.
 
 ---
 
 ## 1. Architectural Overview
 
-The `agentic-research-plugin` provides autonomous technical research, web intelligence gathering, documentation analysis, and evidence-backed synthesis across external knowledge bases and local repositories. It isolates research investigation into a specialized subagent (`@coding-research`), guaranteeing that research remains non-destructive, fact-checked, cited, and reviewed before downstream usage.
+The `agentic-topic-researching-plugin` provides autonomous technical research, web intelligence gathering, documentation analysis, and evidence-backed synthesis across external knowledge bases and local repositories. It isolates research investigation into a specialized subagent (`@coding-research`), guaranteeing that research remains non-destructive, fact-checked, cited, and reviewed before downstream usage.
 
 ### Directory Structure
 ```text
@@ -33,7 +33,7 @@ agents/
 
 | Agent Handle | Directory | `enable_write_tools` | `enable_subagent_tools` | `enable_mcp_tools` | Allowed Tools | Description |
 | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **`@coding-research`** | [`agents/coding-research/`](file:///Users/gpfister/Development/Projects/gpfister/agentic/agentic-research-plugin/agents/coding-research/) | `True` | `True` | `False` | `search_web`, `read_file`, `write_file`, `list_dir`, `ask_question`, `send_message`, `invoke_subagent` | Autonomous topic and web research investigator synthesizing findings into `research-report.md` artifacts, clarifying ambiguities with users, and indexing results in `agentic-obsidian/research/` via `@coding-document` (creating a new topic or updating an existing one). |
+| **`@coding-research`** | [`agents/coding-research/`](file:///Users/gpfister/Development/Projects/gpfister/agentic/agentic-topic-researching-plugin/agents/coding-research/) | `True` | `True` | `False` | `search_web`, `read_file`, `write_file`, `list_dir`, `ask_question`, `send_message`, `invoke_subagent` | Autonomous topic and web research investigator synthesizing findings into `research-report.md` artifacts, clarifying ambiguities with users, and indexing results in `agentic-obsidian/research/` via `@coding-document` (creating a new topic or updating an existing one). |
 
 ---
 

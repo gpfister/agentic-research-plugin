@@ -1,5 +1,5 @@
 [project]
-name = "agentic-research-plugin"
+name = "agentic-topic-researching-plugin"
 version = "0.1.0"
 description = "Autonomous web and topic research plugin conducting literature reviews, competitive analyses, and evidence synthesis."
 readme = "README.md"
