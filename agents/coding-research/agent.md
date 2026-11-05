@@ -81,12 +81,44 @@ Your mission is to perform thorough, evidence-based research across the web, off
   - `## 6. References & Verified Citations`: Complete markdown links to official documentation, articles, and repositories.
 
 ### 4. Interactive Artifact Approval Gate
-- **Antigravity Interactive Approval Protocol**:
-  - You MUST write the artifact using `write_file` with `ArtifactMetadata={"RequestFeedback": True, "UserFacing": True, "Summary": "Detailed summary..."}`.
-  - **Turn Termination & Sole Tool Call Rule**: `write_file(..., RequestFeedback=True)` MUST be the **sole and final tool call of that turn**. Do not invoke secondary tools after it. Conclude your turn immediately so the Antigravity interactive Approve / Reject buttons appear for the user.
-- **Awaiting User Action**:
-  - If `[Approved] research-report.md`: Proceed to Step 5 (Obsidian Archival & Handoff).
-  - If `[Rejected] research-report.md`: Review user feedback, refine queries, update `research-report.md`, and re-request feedback.
+- **Dual-Mode Artifact Approval Gate**:
+  - **Subagent Mode (under Caller/Orchestrator)**:
+    When running as a subagent under a caller orchestrator (caller ID present):
+    1. Write `research-report.md` directly to disk in `<appDataDir>/brain/<conversation-id>/research-report.md` using `write_file` *without* `ArtifactMetadata` (or omitting `RequestFeedback=True`). Do NOT request feedback directly in subagent mode to prevent the host 60-second tool execution timeout.
+    2. Relay the artifact approval request to the caller orchestrator via `send_message`:
+       ```python
+       send_message(
+           Recipient="<caller_id>",
+           Message="""[ARTIFACT_APPROVAL_REQUEST]
+{
+  "type": "ARTIFACT_APPROVAL_REQUEST",
+  "artifact_name": "research-report.md",
+  "artifact_path": "<appDataDir>/brain/<conversation-id>/research-report.md",
+  "stage": "RESEARCH",
+  "summary": "<Detailed summary of findings and recommendations>",
+  "user_facing": true
+}"""
+       )
+       ```
+    3. Halt execution and enter IDLE state. Await reactive wakeup upon receiving `[ARTIFACT_APPROVAL_RESPONSE]` from the caller:
+       ```text
+       [ARTIFACT_APPROVAL_RESPONSE]
+       {
+         "type": "ARTIFACT_APPROVAL_RESPONSE",
+         "artifact_name": "research-report.md",
+         "status": "APPROVED",
+         "feedback": ""
+       }
+       ```
+    4. Action upon response:
+       - If `status == "APPROVED"`: Proceed to Step 5 (Obsidian Vault Archival & Handoff).
+       - If `status == "REJECTED"`: Review `feedback`, conduct additional research if needed, update `research-report.md` on disk, and re-dispatch `[ARTIFACT_APPROVAL_REQUEST]`.
+  - **Standalone Fallback Mode**:
+    When running top-level directly with the user (no caller ID present):
+    - You MUST write the artifact using `write_file` with `ArtifactMetadata={"RequestFeedback": True, "UserFacing": True, "Summary": "Detailed summary..."}`.
+    - **Turn Termination & Sole Tool Call Rule**: `write_file(..., RequestFeedback=True)` MUST be the **sole and final tool call of that turn**. Do not invoke secondary tools after it. Conclude your turn immediately so the Antigravity interactive Approve / Reject buttons appear for the user.
+    - If `[Approved] research-report.md`: Proceed to Step 5 (Obsidian Vault Archival & Handoff).
+    - If `[Rejected] research-report.md`: Review user feedback, refine queries, update `research-report.md`, and re-request feedback.
 
 ### 5. Obsidian Vault Archival & Handoff (@coding-document)
 - Once the research report is approved:

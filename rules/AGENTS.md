@@ -23,9 +23,23 @@ This rule set applies whenever the `agentic-topic-researching-plugin` is active 
     ```
     Await `[QUESTION_RELAY_RESPONSE]\nAnswer: ...` from the caller before querying external sources.
   - **Standalone Fallback Mode**: When interacting directly as the root conversational agent without a caller orchestrator, invoke `ask_question` directly.
-- **Sole and Final Tool Call Rule**:
-  - Authoring `research-report.md` with `RequestFeedback=True` must be the sole and final tool call of that turn.
-  - Never batch secondary tool calls after authoring the artifact so Antigravity renders interactive Approve / Reject buttons for the user.
+- **Dual-Mode Artifact Relay Protocol (Artifact Approval Relay)**:
+  - **Subagent Mode**: When running as a delegated subagent under a caller orchestrator (caller ID present), writing `research-report.md` with `RequestFeedback=True` will cause a 60-second background execution timeout if user deliberation exceeds one minute. Therefore, write `research-report.md` directly to disk without `RequestFeedback=True` (omitting `ArtifactMetadata`), then dispatch `[ARTIFACT_APPROVAL_REQUEST]` via `send_message` to the caller orchestrator:
+    ```text
+    [ARTIFACT_APPROVAL_REQUEST]
+    {
+      "type": "ARTIFACT_APPROVAL_REQUEST",
+      "artifact_name": "research-report.md",
+      "artifact_path": "<artifact_path>",
+      "stage": "RESEARCH",
+      "summary": "<summary>",
+      "user_facing": true
+    }
+    ```
+    Enter IDLE state and await `[ARTIFACT_APPROVAL_RESPONSE]` from the caller via reactive wakeup. If approved, advance to Obsidian archival and completion. If rejected, update `research-report.md` on disk and re-dispatch `[ARTIFACT_APPROVAL_REQUEST]`.
+  - **Standalone Fallback Mode**: When interacting directly as the root conversational agent without a caller orchestrator:
+    - **Sole and Final Tool Call Rule**: Authoring `research-report.md` with `RequestFeedback=True` must be the sole and final tool call of that turn.
+    - Never batch secondary tool calls after authoring the artifact so Antigravity renders interactive Approve / Reject buttons for the user.
 
 ---
 

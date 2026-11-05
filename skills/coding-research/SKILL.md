@@ -23,8 +23,9 @@ The `coding-research` subagent conducts in-depth technical investigations, web s
    - Synthesizes findings with primary source citations and structured trade-off matrices.
    - Strictly enforces read-only boundaries on workspace source code.
 4. **Research Report Artifact Approval Gate**:
-   - Writes `research-report.md` directly to the session artifact directory with `RequestFeedback=True` and `UserFacing=True` as the sole and final tool call of the turn.
-   - Awaits user review and approval (`[Approved]` or `[Rejected]`).
+   - **Dual-Mode Artifact Relay Protocol**:
+     * **Subagent Mode (Artifact Approval Relay Protocol)**: When operating under a caller orchestrator, writes `research-report.md` directly to disk in the session artifact directory without requesting feedback. Relays approval to the caller orchestrator via `send_message` using the `[ARTIFACT_APPROVAL_REQUEST]` envelope and enters IDLE state awaiting `[ARTIFACT_APPROVAL_RESPONSE]` from the caller to eliminate the 60-second background execution timeout.
+     * **Standalone Mode**: Writes `research-report.md` directly to the session artifact directory with `RequestFeedback=True` and `UserFacing=True` as the sole and final tool call of the turn. Awaits user review and approval (`[Approved]` or `[Rejected]`).
 5. **Obsidian Vault Archival & Handoff (@coding-document)**:
    - Once approved, if `agentic-project-documenting-plugin` is installed, invokes `@coding-document` to record the research in `agentic-obsidian/research/`, creating a new topic/subject or updating an existing one.
    - If not installed, presents the research findings directly in chat without invoking subagents.
