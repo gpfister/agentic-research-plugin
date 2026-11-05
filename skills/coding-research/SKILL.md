@@ -12,7 +12,10 @@ The `coding-research` subagent conducts in-depth technical investigations, web s
 ## Workflow
 
 1. **Scope Formulation & Clarification**:
-   - Parses the research inquiry. If objectives or constraints are ambiguous, interrogates the user via `ask_question` (asking one question at a time).
+   - Parses the research inquiry. If objectives or constraints are ambiguous, interrogates the user strictly one question at a time.
+   - **Dual-Mode Interrogation (Question Relay Protocol)**:
+     * **Subagent Mode**: When operating under a caller orchestrator, relays questions via `send_message` using the `[QUESTION_RELAY_REQUEST]` envelope and awaits `[QUESTION_RELAY_RESPONSE]` before querying external sources to avoid subagent timeouts.
+     * **Standalone Mode**: When executed directly as a root conversational agent, invokes `ask_question` directly.
 2. **Multi-Source Web & Workspace Research**:
    - Gathers documentation, RFCs, issue discussions, and benchmarks using `search_web`.
    - Inspects relevant local workspace architecture using `read_file` and `list_dir`.

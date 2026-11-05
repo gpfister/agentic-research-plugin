@@ -33,29 +33,48 @@ agents/
 
 | Agent Handle | Directory | `enable_write_tools` | `enable_subagent_tools` | `enable_mcp_tools` | Allowed Tools | Description |
 | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **`@coding-research`** | [`agents/coding-research/`](file:///Users/gpfister/Development/Projects/gpfister/agentic/agentic-topic-researching-plugin/agents/coding-research/) | `True` | `True` | `False` | `search_web`, `read_file`, `write_file`, `list_dir`, `ask_question`, `send_message`, `invoke_subagent` | Autonomous topic and web research investigator synthesizing findings into `research-report.md` artifacts, clarifying ambiguities with users, and indexing results in `agentic-obsidian/research/` via `@coding-document` (creating a new topic or updating an existing one). |
+| **`@coding-research`** | [`agents/coding-research/`](file:///Users/gpfister/Development/Projects/gpfister/agentic/agentic-topic-researching-plugin/agents/coding-research/) | `True` | `True` | `False` | `search_web`, `read_file`, `write_file`, `list_dir`, `ask_question`, `send_message`, `invoke_subagent` | Autonomous topic and web research investigator synthesizing findings into `research-report.md` artifacts, clarifying ambiguities with users (via direct `ask_question` when standalone, or Question Relay Protocol `[QUESTION_RELAY_REQUEST]` / `[QUESTION_RELAY_RESPONSE]` when delegated), and indexing results in `agentic-obsidian/research/` via `@coding-document` (creating a new topic or updating an existing one). |
 
 ---
 
 ## 3. Research & Synthesis Protocol
 
 ```text
-Clarify Ambiguity ──> Query Web & Docs ──> Cross-Validate Evidence ──┐
-     ▲                      │                                        │
-     └──(ask_question)──────┘                                        ▼
-                                                    Draft research-report.md
-                                                    (RequestFeedback=True)
-                                                             │
-                                                      [Approved by User]
-                                                             ▼
-                                           agentic-project-documenting-plugin installed?
-                                                       │                    │
-                                                     (Yes)                 (No)
-                                                       ▼                    ▼
-                                            Invoke @coding-document       Present
-                                            to record/update topic in     report in
-                                            agentic-obsidian/research/    chat
+Clarify Ambiguity ────────────────────────────> Query Web & Docs ──> Cross-Validate Evidence ──┐
+ (Standalone: direct ask_question)                     │                                        │
+ (Subagent: [QUESTION_RELAY_REQUEST] via send_message) │                                        │
+     ▲                                                 │                                        ▼
+     └─────────────────────────────────────────────────┘                       Draft research-report.md
+                                                                               (RequestFeedback=True)
+                                                                                        │
+                                                                                 [Approved by User]
+                                                                                        ▼
+                                                                       agentic-project-documenting-plugin installed?
+                                                                                   │                    │
+                                                                                 (Yes)                 (No)
+                                                                                   ▼                    ▼
+                                                                        Invoke @coding-document       Present
+                                                                        to record/update topic in     report in
+                                                                        agentic-obsidian/research/    chat
 ```
+
+### Question Relay Protocol (Dual-Mode Interrogation)
+When operating as a subagent under an orchestrator (such as `@coding` or `@coding-investigate`), `@coding-research` does not invoke `ask_question` directly. To prevent the 60-second execution timeout from aborting research tasks during user deliberation, inquiries are relayed via `send_message`:
+- **Relay Request (`[QUESTION_RELAY_REQUEST]`)**:
+  ```text
+  [QUESTION_RELAY_REQUEST]
+  Question: <Question text>
+  Options:
+  - (Recommended) <Option 1>
+  - <Option 2>
+  Context: <Technical rationale>
+  ```
+- **Relay Response (`[QUESTION_RELAY_RESPONSE]`)**:
+  ```text
+  [QUESTION_RELAY_RESPONSE]
+  Answer: <selected_option_or_text>
+  ```
+When running standalone without a caller, `@coding-research` falls back to invoking `ask_question` directly.
 
 ### Mandatory Artifact Approval Gate
 - **Location**: `<appDataDir>/brain/<conversation-id>/research-report.md`

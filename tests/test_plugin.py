@@ -132,3 +132,58 @@ def test_research_skill_exists():
     assert "Topic & Web Research Investigator" in content
     assert "research-report.md" in content
     assert "agentic-obsidian/research/" in content
+
+
+def test_question_relay_protocol_in_agent():
+    agent_file = PLUGIN_ROOT / "agents" / "coding-research" / "agent.md"
+    assert agent_file.exists(), "agents/coding-research/agent.md must exist"
+    content = agent_file.read_text(encoding="utf-8")
+
+    # Verify tools frontmatter contains both send_message and ask_question
+    assert "send_message" in content, "send_message must be an allowed tool"
+    assert "ask_question" in content, "ask_question must be an allowed tool"
+
+    # Verify Question Relay Protocol envelopes and fields
+    assert "[QUESTION_RELAY_REQUEST]" in content
+    assert "[QUESTION_RELAY_RESPONSE]" in content
+    assert "Question Relay Protocol" in content
+    assert "Question:" in content
+    assert "Options:" in content
+    assert "Context:" in content
+    assert "Answer:" in content
+
+    # Verify Subagent and Standalone modes coverage
+    assert "Subagent Mode" in content
+    assert "Standalone" in content
+    assert 'Recipient="<caller_id>"' in content
+
+
+def test_question_relay_protocol_in_rules_and_skill():
+    rules_file = PLUGIN_ROOT / "rules" / "AGENTS.md"
+    assert rules_file.exists(), "rules/AGENTS.md must exist"
+    rules_content = rules_file.read_text(encoding="utf-8")
+    assert "Question Relay Protocol" in rules_content
+    assert "[QUESTION_RELAY_REQUEST]" in rules_content
+    assert "[QUESTION_RELAY_RESPONSE]" in rules_content
+    assert "Subagent Mode" in rules_content
+    assert "Standalone" in rules_content
+
+    skill_file = PLUGIN_ROOT / "skills" / "coding-research" / "SKILL.md"
+    assert skill_file.exists(), "skills/coding-research/SKILL.md must exist"
+    skill_content = skill_file.read_text(encoding="utf-8")
+    assert "Question Relay Protocol" in skill_content
+    assert "[QUESTION_RELAY_REQUEST]" in skill_content
+    assert "[QUESTION_RELAY_RESPONSE]" in skill_content
+    assert "Subagent Mode" in skill_content
+    assert "Standalone Mode" in skill_content
+
+
+def test_question_relay_protocol_in_central_guide():
+    central_file = PLUGIN_ROOT / "agents" / "agent.md"
+    assert central_file.exists(), "agents/agent.md must exist"
+    content = central_file.read_text(encoding="utf-8")
+    assert "Question Relay Protocol" in content
+    assert "[QUESTION_RELAY_REQUEST]" in content
+    assert "[QUESTION_RELAY_RESPONSE]" in content
+    assert "Dual-Mode" in content or "dual-mode" in content
+

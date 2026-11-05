@@ -36,9 +36,31 @@ Your mission is to perform thorough, evidence-based research across the web, off
 
 ### 1. Scope Formulation & Clarification
 - Analyze the user's research topic, technical inquiry, or architectural question.
-- If the research topic or decision boundaries are ambiguous, ask clarifying questions:
-  - Interrogate the user **one question at a time** using `ask_question`.
-  - Provide multiple-choice options with recommendations where appropriate, or concise open-ended questions.
+- If the research topic or decision boundaries are ambiguous, ask clarifying questions strictly **one question at a time**.
+- **Dual-Mode Interrogation (Question Relay Protocol)**:
+  - **Subagent Mode (under Caller/Orchestrator)**: When running as a subagent under a caller orchestrator (e.g., `@coding`, `@coding-investigate`, or another agent with caller ID present):
+    * Do NOT call `ask_question` directly. Relay research scope questions to the caller via `send_message`:
+      ```python
+      send_message(
+          Recipient="<caller_id>",
+          Message="[QUESTION_RELAY_REQUEST]\nQuestion: <Question text>\nOptions:\n- (Recommended) <Option 1>\n- <Option 2>\nContext: <Why this clarification is required and technical context>"
+      )
+      ```
+    * Await `[QUESTION_RELAY_RESPONSE]\nAnswer: <selected_option_or_text>` from the caller before proceeding to query external sources.
+  - **Standalone Fallback Mode**: When executed directly at the top level as a root agent without a parent caller, invoke `ask_question` directly:
+    ```python
+    ask_question(
+        questions=[{
+            "question": "<Question text>",
+            "options": [
+                "(Recommended) <Option 1>",
+                "<Option 2>"
+            ],
+            "is_multi_select": False
+        }]
+    )
+    ```
+- Provide multiple-choice options with recommendations where appropriate, or concise open-ended questions.
 
 ### 2. Multi-Source Web & Repository Research
 - Execute targeted web queries using `search_web` across official documentation, GitHub repositories, RFCs, release notes, and engineering benchmarks.

@@ -12,7 +12,17 @@ This rule set applies whenever the `agentic-topic-researching-plugin` is active 
 ---
 
 ## 2. Interactive Approval Gates & Clarification
-- **One Question at a Time**: When asking for user clarification regarding research scope, ambiguity, priority weighting, or domain criteria, always use `ask_question` asking one question at a time.
+- **One Question at a Time**: When asking for user clarification regarding research scope, ambiguity, priority weighting, or domain criteria, ask strictly one question at a time.
+- **Dual-Mode Interrogation (Question Relay Protocol)**:
+  - **Subagent Mode**: When running as a delegated subagent under a caller orchestrator, do NOT call `ask_question` directly. Relay scope clarification questions to the caller via `send_message` with:
+    ```text
+    [QUESTION_RELAY_REQUEST]
+    Question: <Precise question text>
+    Options: <List of choices or 'Free text'>
+    Context: <Technical rationale for the inquiry>
+    ```
+    Await `[QUESTION_RELAY_RESPONSE]\nAnswer: ...` from the caller before querying external sources.
+  - **Standalone Fallback Mode**: When interacting directly as the root conversational agent without a caller orchestrator, invoke `ask_question` directly.
 - **Sole and Final Tool Call Rule**:
   - Authoring `research-report.md` with `RequestFeedback=True` must be the sole and final tool call of that turn.
   - Never batch secondary tool calls after authoring the artifact so Antigravity renders interactive Approve / Reject buttons for the user.
